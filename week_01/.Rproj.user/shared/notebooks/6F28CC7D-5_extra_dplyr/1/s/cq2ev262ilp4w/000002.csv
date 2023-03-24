@@ -1,0 +1,6 @@
+"0","```r
+deaths %>% 
+  group_by(allegiances) %>% 
+  summarise(across(where(is.numeric), 
+                        mean))
+```"

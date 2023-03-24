@@ -1,0 +1,5 @@
+"0","movies_imputed <- movies_runtime %>%  "
+"0","  mutate(runtime = coalesce(runtime, median(runtime, na.rm = TRUE)))"
+"2","Error in movies_runtime %>% mutate(runtime = coalesce(runtime, median(runtime,  : 
+  could not find function ""%>%""
+"

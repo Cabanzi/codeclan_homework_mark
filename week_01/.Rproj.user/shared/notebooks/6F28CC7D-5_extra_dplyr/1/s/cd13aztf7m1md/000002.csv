@@ -1,0 +1,5 @@
+"0","```r
+deaths %>% 
+  mutate(across(.cols = book1_GoT:book5_DwD,
+                .fns = as.logical))
+```"

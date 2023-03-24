@@ -1,0 +1,5 @@
+"0","```r
+
+(meals <-  chinesemeal %>% 
+  janitor::clean_names())
+```"

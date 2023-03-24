@@ -1,0 +1,6 @@
+"0","```r
+deaths <- read.csv(\"character_deaths.csv\")
+
+```"
+"1","Warning: cannot open file 'character_deaths.csv': No such file or directoryError in file(file, \"rt\") : cannot open the connection
+"

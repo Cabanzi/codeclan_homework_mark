@@ -1,0 +1,6 @@
+"0","```r
+deaths %>% 
+  group_by(allegiances) %>% 
+  summarise(across(.cols = book1_GoT:book5_DwD,
+                   .fns = sum))
+```"

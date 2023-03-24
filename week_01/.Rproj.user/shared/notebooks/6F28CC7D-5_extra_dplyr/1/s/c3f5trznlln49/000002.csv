@@ -1,0 +1,6 @@
+"0","```r
+new_coders <- read.csv(\"new_coders.csv\")
+ ```
+```"
+"1","Warning: argument is not numeric or logical: returning NA
+"

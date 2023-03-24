@@ -1,0 +1,5 @@
+"0","  mutate(total_charges = na_if(total_charges, ""na""))
+"
+"2","Error in vec_cast(x = y, to = x, x_arg = ""y"", to_arg = ""x"") : 
+  object 'total_charges' not found
+"

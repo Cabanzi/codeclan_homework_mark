@@ -1,0 +1,214 @@
+---
+title: "Cleaning & Extra `dplyr` Homework - Answers"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+    css: ../../../styles.css
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# MVP
+
+
+<br>
+**Question 1**
+
+After you've read in the data and assigned it to a variable with a useful name, investigate it. Write down some ideas for what you could do to further investigate/clean this data using what you've learned today (no need to code it though, just jot down thoughts and ideas). Feel free to also write down any general thoughts you get looking at the data - this task is just to get you thinking about data and data cleaning/prepping.
+
+<details>
+<summary>**Answer**</summary>
+```{r, message= F, warning = F}
+library(tidyverse)
+
+movies <- read_csv("data/movies.csv")
+```
+
+```{r, eval = F}
+# dimensions of dataset
+dim(movies)
+
+# investigate columns 
+view(movies)
+
+# total number of missing values in dataset
+sum(is.na(movies))
+
+# how many rows are lost if you drop NAs
+nrow(movies) - nrow(drop_na(movies))
+
+```
+There's no single right answer for this task, but here's some things I noticed at a quick glance:
+
+* there seems to be a lot of NAs in the `homepage` and `tagline` columns
+* there are two columns: `original_title` and `title` that seem to contain similar things
+* there's a lot of movies with a budget and revenue of 0 - presumably missing data
+* you'd lose 3310 out of 4803 rows if you dropped all NAs - that's a bit much, so probably better to deal with them in some other way
+</details>
+
+<br>
+
+**Question 2**
+
+A lot of interesting stuff in there! But for now, we are only interested in the movies' titles, their runtime as well as their budget. Select the three columns that contain this information and save them into a new variable called `movies_selected`. Hint: you will have to make a choice between `original_title` and `title`.
+
+<details>
+<summary>**Answer**</summary>
+```{r}
+# column title chosen as it contains the english titles
+movies_selected <- movies %>% 
+  select(title, runtime, budget)
+
+movies_selected
+```
+</details>
+
+<br>
+
+**Question 3**
+
+Ok, now take your subsetted data `movies_selected`, and count the number of missing values in each column.
+
+<details>
+<summary>**Answer**</summary>
+```{r}
+
+movies_selected %>% 
+  summarise(na_runtime = sum(is.na(runtime)),
+            na_title = sum(is.na(title)),
+            na_budget = sum(is.na(budget)))
+
+# OR
+
+movies_selected %>% 
+  summarise(across(.fns = ~sum(is.na(.x))))
+
+```
+</details>
+
+<br>
+
+**Question 4**
+
+There's not too many NAs, but there are actually quite a few movies with a runtime of 0 in this dataset. Since it's impossible for a movie to have a runtime of 0, use the function `na_if` to convert runtimes of length 0 into NAs. Save this into a new object called `movies_runtime`. Then count how many missing values there are now in the column `runtime`.
+
+<details>
+<summary>**Answer**</summary>
+```{r}
+movies_runtime <- movies_selected %>%
+  mutate(runtime = na_if(runtime, 0))
+
+movies_runtime %>% 
+  summarise(count = sum(is.na(runtime)))
+```
+</details>
+
+<br>
+
+**Question 5**
+
+Impute the missing values in `runtime` with the median runtime using `coalesce` and save this into a new object called `movies_imputed`. There should now be no missing values in the column `runtime` - check this to make sure.
+
+<details>
+<summary>**Answer**</summary>
+```{r}
+movies_imputed <- movies_runtime %>%  
+  mutate(runtime = coalesce(runtime, median(runtime, na.rm = TRUE)))
+
+movies_imputed %>% 
+  summarise(count = sum(is.na(runtime)))
+```
+</details>
+
+<br>
+
+**Question 6**
+
+Finally, use the `slice_min` and `slice_max` functions on `movies_imputed` to get the movies with the 10 shortest and 10 longest runtimes.
+
+<details>
+<summary>**Answer**</summary>
+```{r}
+movies_imputed %>% 
+  slice_min(runtime, n = 10)
+
+movies_imputed %>% 
+  slice_max(runtime, n = 10)
+```
+</details>
+
+<br>
+
+**Question 7**
+
+Using the `if_else` function, impute anything with a budget below $100 with the median budget. Overwrite your `movies_imputed` so it contains the new budget values.
+
+<details>
+<summary>**Answer**</summary>
+```{r}
+
+movies_imputed <- movies_imputed %>% 
+  mutate(budget = if_else(budget < 100, median(budget), budget))
+
+```
+</details>
+
+<br>
+
+# Extension
+
+<br> 
+
+**Question 1**  
+
+Using `case_when`, create a new column called `budget_type` and label budgets as follows:
+
+* Budgets below 12 million as 'Small budget'
+* Budgets between 12 and 40 million as 'Medium budget'
+* Budgets 40 millions and above as 'Big budget'
+
+Save this into a new variable called `movie_budgets`.
+
+**Hint:** 1e6 is a shorthand way of writing 1 million ($1 \times 10^6$)
+
+<details>
+<summary>**Answer**</summary>
+```{r}
+
+movie_budgets <- movies_imputed %>%
+  mutate(
+    budget_type = case_when(
+      budget < 12e6 ~ "Small budget",
+      budget < 40e6 ~ "Medium budget",
+      budget >= 40e6 ~ "Big budget"
+      )
+    )
+
+movie_budgets
+
+```
+</details>
+
+<br> 
+
+**Question 2**  
+
+Take the original dataset with all the variables. Using `across` and `where`, summarise the number of missing values, first across all columns of type `character`, and then across all columns of type `numeric`.
+
+<details>
+<summary>**Answer**</summary>
+```{r}
+movies %>%
+  summarise(across(where(is.numeric), ~sum(is.na(.x))))
+
+movies %>%
+  summarise(across(where(is.character), ~sum(is.na(.x))))
+```
+</details>

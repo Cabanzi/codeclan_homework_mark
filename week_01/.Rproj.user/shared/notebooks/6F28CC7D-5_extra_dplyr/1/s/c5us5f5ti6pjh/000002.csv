@@ -1,0 +1,6 @@
+"0","```r
+meals %>% 
+  group_by(food_type) %>% 
+  mutate(ly_cals = lag(calories_per_day),
+         yoy_calchange = calories_per_day - ly_cals)
+```"

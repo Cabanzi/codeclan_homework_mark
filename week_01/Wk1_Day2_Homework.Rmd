@@ -1,0 +1,91 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(CodeClanData)
+```
+
+```{r}
+drinks_content
+```
+
+## Question 1
+
+```{r}
+  dim(drinks_content)
+```
+242 Observations, 18 Variables 
+
+```{r}
+glimpse(drinks_content)
+```
+variable names + types
+
+##Question 2
+```{r}
+selected_drinks <-  drinks_content %>% 
+select(Beverage_category, Beverage, Beverage_prep, Calories)
+
+sum(is.na(selected_drinks))
+```
+
+##Question 3 
+```{r}
+drinks_content %>% 
+  mutate(calorie_diff = Calories - 135, .after = Calories)
+```
+
+## Question 4 
+```{r}
+drinks_content %>% 
+  select(Beverage_category, Calories) %>% 
+  group_by(Beverage_category) %>% 
+  summarise(mean_calories = mean(Calories)) %>% 
+  arrange(desc(mean_calories))
+  
+
+
+  
+```
+The categories with the highest mean calories are: `Smoothies`, `Frappuccino® Blended Coffee` & `Signature Espresso Drinks`
+The Categories with the least are: `Classic Espresso Drinks`, `Shaken Iced Beverages`& `Shaken Iced Beverages` 
+
+##Question 5 
+```{r}
+drinks_content %>% 
+  select(Beverage_prep, Calories) %>% 
+  group_by(Beverage_prep) %>% 
+  summarise(mean_calories = mean(Calories)) %>% 
+  arrange(desc(mean_calories))
+
+```
+
+## Question 6 
+First work out average Calories
+```{r}
+drinks_content %>% 
+  summarise(mean(Calories))
+```
+Then 
+```{r}
+drinks_content %>% 
+  select(Beverage_prep, Calories) %>% 
+  group_by(Beverage_prep) %>% 
+  summarise(mean_calories = mean(Calories)) %>% 
+  arrange(desc(mean_calories)) %>% 
+  filter(mean_calories > 193.8719)
+```
+
+
+
+## Question 7 
+```{r}
+drinks_content %>% 
+  select(Beverage, Beverage_category, Beverage_prep, Calories) %>% 
+ arrange(Calories) 
+```
+
+Short Brewed Coffee
