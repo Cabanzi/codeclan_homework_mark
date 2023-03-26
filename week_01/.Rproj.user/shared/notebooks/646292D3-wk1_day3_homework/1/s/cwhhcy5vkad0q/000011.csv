@@ -1,5 +1,0 @@
-"0","movies_runtime <- movies_selected %>%"
-"0","  mutate(runtime = na_if(runtime, 0))"
-"0",""
-"0","movies_runtime %>% "
-"0","  summarise(count = sum(is.na(runtime)))"

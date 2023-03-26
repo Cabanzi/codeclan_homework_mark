@@ -1,0 +1,101 @@
+---
+title: "Week 1 Weekend Homework"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(lubridate)
+
+
+
+## Dataset -----
+goodreads <- read.csv("books.csv")
+
+ glimpse(goodreads)
+# distinct(goodreads)
+# names(goodreads)
+
+```
+
+```{r}
+goodreads_books <- goodreads %>% 
+  select(title, authors, average_rating, 
+         language_code, ratings_count, publisher, num_pages) %>% 
+  filter(ratings_count > 100000) 
+```
+
+```{r}
+goodreads_books %>% 
+    summarise(count = sum(is.na(average_rating))) %>% 
+  pull()
+
+goodreads_books %>% 
+summarise(count = sum(is.na(ratings_count))) %>% 
+  pull()
+```
+## Highest rated titles
+
+```{r}
+goodreads_books %>% 
+  arrange(average_rating) %>% 
+  tail(5)
+```
+
+For this metric I only included books that had more than 100,000 reviews. 
+
+## Author with the highest average rating 
+
+```{r}
+goodreads_books %>% 
+  group_by(authors) %>% 
+  summarise(average_rating = mean(average_rating)) %>% 
+  arrange(desc(average_rating)) %>% 
+  head(5)
+
+```
+
+#Author with the most reviews 
+
+```{r}
+goodreads_books %>% 
+  group_by(authors) %>% 
+  summarise(total_reviews = sum(ratings_count)) %>% 
+  arrange(desc(total_reviews)) %>% 
+  head(5)
+```
+From this we can see the most popular author is J.K Rowling
+
+
+# Does book lenght affect rating? 
+```{r}
+length_v_rating <- goodreads_books %>% 
+  head(50) %>% 
+  ggplot(aes(x = num_pages, y = average_rating)) + geom_point() + geom_smooth(method = "lm", se = FALSE)
+
+length_v_rating
+  
+  
+  
+```
+
+From this graph we can see that the longer a book is the more likely it is to be rated higher.  
+
+#How puplication year affects rating count
+
+```{r}
+book_rating_date <- goodreads %>% 
+  select(title, ratings_count, publication_date) 
+```
+
+```{r}
+date_published <- book_rating_date %>%
+  as.Date(publication_date, format = "%m%d&y") #%>% 
+  #year <- format(date_published, "%Y")
+  
+
+```
+Need to ask for help to reformat "publication_date" into a date so I can then extract the year
+```
+

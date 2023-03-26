@@ -1,6 +1,0 @@
-"0","budget <-  movies_imputed %>% 
-as.numeric(budget)
-"
-"2","Error in movies_imputed %>% as.numeric(budget) : 
-  object 'budget' not found
-"

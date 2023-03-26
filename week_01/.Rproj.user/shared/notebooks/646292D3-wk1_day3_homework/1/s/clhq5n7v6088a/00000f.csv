@@ -1,2 +1,0 @@
-"0","movies_selected %>% "
-"0","   summarise(count = sum(is.na(runtime))) "
