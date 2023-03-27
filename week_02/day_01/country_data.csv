@@ -1,0 +1,11 @@
+country,type,Y1999,Y2000,Y2001,code_letter,code_numb
+1. Afghanistan,population,19987071,19988016,19987341,A,1
+1. Afghanistan,cases,2666,3611,2936,A,1
+2. Brazil,cases,37737,38682,38007,B,2
+2. Brazil,population,172006362,172007307,172006632,B,2
+3. China,cases,212258,213203,212528,C,3
+3. China,population,1272915272,1272916217,1272915542,C,3
+4. Germany,cases,80488,81433,80758,G,4
+4. Germany,population,174504898,174505843,174505168,G,4
+5. Finland,cases,213766,214711,214036,F,5
+5. Finland,population,1280428583,1280429528,1280428853,F,5
