@@ -1,0 +1,108 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+```
+
+```{r}
+codeclan_info <- read.csv("data//code_clan_info.csv")
+codeclan_tweets <- read.csv("data//code_clan_tweets.csv")
+```
+
+## Question 1
+```{r}
+glimpse(codeclan_tweets)
+```
+
+## Question 2
+```{r}
+codeclan_tweets %>% 
+  select(favorite_count, is_quote) %>% 
+  filter(is_quote == FALSE) %>% 
+  summarise(sum(favorite_count))
+  
+```
+425 tweets 
+
+# Question 3
+```{r}
+codeclan_tweets %>% 
+  select(retweet_count, is_quote, retweet_source) %>% 
+  drop_na() %>% 
+  group_by(retweet_source) %>% 
+  summarise(mean_retweet = mean(retweet_count)) %>% 
+  arrange(desc(mean_retweet))
+
+```
+
+## Question 4
+```{r}
+codeclan_tweets %>% 
+  select(favorite_count, media_type) %>% 
+  mutate(media_type = replace_na(media_type, "text")) %>% 
+  group_by(media_type) %>% 
+  summarise(sum(favorite_count))
+ 
+```
+Did not put in arrange function because table only had two values and went from highest to lowest.
+
+## Question 5 
+```{r}
+codeclan_tweets %>% 
+  select(display_text_width) %>%
+  summarise(mean_tweet = mean(display_text_width))
+ 
+```
+
+The average length of a tweet is 149 characters 
+
+# Question 6
+
+```{r}
+twitter_tibble <- inner_join(codeclan_tweets, codeclan_info, by = "tweet_id") 
+
+twitter_tibble
+```
+
+## Question 7
+```{r}
+codeclan_hashtags <- twitter_tibble %>% 
+   select(tweet_id, tweet_id, hashtags) %>% 
+   mutate(hashtags = str_to_lower(hashtags)) %>% 
+   drop_na(hashtags)
+
+codeclan_hashtags
+```
+
+
+
+## Extensions
+
+#Question 8
+```{r}
+hashtag_new <- codeclan_hashtags %>%
+  filter(str_detect(str_sub(hashtags, 1, 2), "c\\("))
+
+hashtag_new
+```
+
+#Question 9
+```{r}
+codeclan_edinburgh_tweets <- codeclan_tweets %>% 
+  select(text, hashtags) %>% 
+  mutate(text = str_to_lower(text),
+       hashtags = str_to_lower(hashtags)) %>% 
+  filter(str_detect(text, 
+                    "edinburgh") |
+           str_detect(hashtags, "edinburgh")) %>% 
+  nrow()
+
+codeclan_edinburgh_tweets
+  
+```
+
+#This gives me how many rows it appears in but I am currently unsure how to get an exact count
