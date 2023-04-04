@@ -40,7 +40,10 @@ Glasgow_weather$Thursday$temperature
 week1_temps <- c(11, 10, 10, 10, 9, 9, 9)
 week2_temps <- c(9, 9, 8, 11, 10, 12, 11)
 
-portree_temp <- matrix(c(week1_temps, week2_temps), nrow = 2, byrow = TRUE)  
+portree_temp <- matrix(
+  c(week1_temps, week2_temps),
+  nrow = 2, 
+  byrow = TRUE)  
   
 colnames(portree_temp) <- c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun") 
   
@@ -88,8 +91,24 @@ Couldn't think of a good name and best practice says we should try and use a "ve
 verb("ten")
 verb(9)
 verb(100)
+verb(t)
 ```
 
 ## Question 6
 
 my brain has decided to stop functioning for the day
+```{r}
+check_vectors <- function(vec1, vec2) {
+  if (length(vec1) != length(vec2)) {
+    return("Different")
+  } else if (all(vec1 == vec2)) {
+    return("Exactly the same")
+  } else if (all(sort(vec1) == sort(vec2))) {
+    return("The same")
+  } else {
+    return("Different")
+  }
+}
+```
+ 
+ 

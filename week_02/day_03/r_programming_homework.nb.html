@@ -1763,9 +1763,14 @@ display: none;
 <h2>Question 1</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuR2xhc2dvd193ZWF0aGVyXG5cbmBgYCJ9 -->
-<pre class="r"><code>Glasgow_weather
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuR2xhc2dvd193ZWF0aGVyIDwtIGxpc3QoXG4gIFRodXJzZGF5ID0gbGlzdChyYWluZmFsbCA9IFwiMW1tXCIsIHdpbmRfc3BlZWQgPSBcIjUtMTJtcGhcIiwgdGVtcGVyYXR1cmUgPSBcIjE0b2NcIiksXG4gIEZyaWRheSA9IGxpc3QocmFpbmZhbGwgPSBcIjBtbVwiLCB3aW5kX3NwZWVkID0gXCI1LTEybXBoXCIsIHRlbXBlcmF0dXJlID0gXCIxMm9jXCIpLFxuICBTYXR1cmRheSA9IGxpc3QocmFpbmZhbGwgPSBcIjBtbVwiLCB3aW5kX3NwZWVkID0gXCI0LTEybXBoXCIsIHRlbXBlcmF0dXJlID0gXCIxNDljXCIpXG4pXG5cbkdsYXNnb3dfd2VhdGhlclxuYGBgIn0= -->
+<pre class="r"><code>Glasgow_weather &lt;- list(
+  Thursday = list(rainfall = &quot;1mm&quot;, wind_speed = &quot;5-12mph&quot;, temperature = &quot;14oc&quot;),
+  Friday = list(rainfall = &quot;0mm&quot;, wind_speed = &quot;5-12mph&quot;, temperature = &quot;12oc&quot;),
+  Saturday = list(rainfall = &quot;0mm&quot;, wind_speed = &quot;4-12mph&quot;, temperature = &quot;149c&quot;)
+)
+
+Glasgow_weather</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiJFRodXJzZGF5XG4kVGh1cnNkYXkkcmFpbmZhbGxcblsxXSBcIjFtbVwiXG5cbiRUaHVyc2RheSR3aW5kX3NwZWVkXG5bMV0gXCI1LTEybXBoXCJcblxuJFRodXJzZGF5JHRlbXBlcmF0dXJlXG5bMV0gXCIxNG9jXCJcblxuXG4kRnJpZGF5XG4kRnJpZGF5JHJhaW5mYWxsXG5bMV0gXCIwbW1cIlxuXG4kRnJpZGF5JHdpbmRfc3BlZWRcblsxXSBcIjUtMTJtcGhcIlxuXG4kRnJpZGF5JHRlbXBlcmF0dXJlXG5bMV0gXCIxMm9jXCJcblxuXG4kU2F0dXJkYXlcbiRTYXR1cmRheSRyYWluZmFsbFxuWzFdIFwiMG1tXCJcblxuJFNhdHVyZGF5JHdpbmRfc3BlZWRcblsxXSBcIjQtMTJtcGhcIlxuXG4kU2F0dXJkYXkkdGVtcGVyYXR1cmVcblsxXSBcIjE0OWNcIlxuIn0= -->
 <pre><code>$Thursday
@@ -1805,9 +1810,8 @@ $Saturday$temperature
 <p>##Question 2 i</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuR2xhc2dvd193ZWF0aGVyJFRodXJzZGF5JHJhaW5mYWxsXG5cbmBgYCJ9 -->
-<pre class="r"><code>Glasgow_weather$Thursday$rainfall
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuR2xhc2dvd193ZWF0aGVyJFRodXJzZGF5JHJhaW5mYWxsXG5gYGAifQ== -->
+<pre class="r"><code>Glasgow_weather$Thursday$rainfall</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMW1tXCJcbiJ9 -->
 <pre><code>[1] &quot;1mm&quot;</code></pre>
@@ -1817,9 +1821,8 @@ $Saturday$temperature
 <p>ii</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuR2xhc2dvd193ZWF0aGVyJEZyaWRheSR3aW5kX3NwZWVkXG5cbmBgYCJ9 -->
-<pre class="r"><code>Glasgow_weather$Friday$wind_speed
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuR2xhc2dvd193ZWF0aGVyJEZyaWRheSR3aW5kX3NwZWVkXG5gYGAifQ== -->
+<pre class="r"><code>Glasgow_weather$Friday$wind_speed</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiNS0xMm1waFwiXG4ifQ== -->
 <pre><code>[1] &quot;5-12mph&quot;</code></pre>
@@ -1842,11 +1845,14 @@ $Saturday$temperature
 <h2>Question 3</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2VlazFfdGVtcHMgPC0gYygxMSwgMTAsIDEwLCAxMCwgOSwgOSwgOSlcbndlZWsyX3RlbXBzIDwtIGMoOSwgOSwgOCwgMTEsIDEwLCAxMiwgMTEpXG5cbnBvcnRyZWVfdGVtcCA8LSBtYXRyaXgoYyh3ZWVrMV90ZW1wcywgd2VlazJfdGVtcHMpLCBucm93ID0gMiwgYnlyb3cgPSBUUlVFKSAgXG4gIFxuY29sbmFtZXMocG9ydHJlZV90ZW1wKSA8LSBjKFwiTW9uXCIsIFwiVHVlXCIsIFwiV2VkXCIsIFwiVGh1XCIsIFwiRnJpXCIsIFwiU2F0XCIsIFwiU3VuXCIpIFxuICBcbnJvd25hbWVzKHBvcnRyZWVfdGVtcCkgPC0gYyhcIldlZWsgMVwiLCBcIldlZWsgMlwiKVxuXG5wb3J0cmVlX3RlbXBcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2VlazFfdGVtcHMgPC0gYygxMSwgMTAsIDEwLCAxMCwgOSwgOSwgOSlcbndlZWsyX3RlbXBzIDwtIGMoOSwgOSwgOCwgMTEsIDEwLCAxMiwgMTEpXG5cbnBvcnRyZWVfdGVtcCA8LSBtYXRyaXgoXG4gIGMod2VlazFfdGVtcHMsIHdlZWsyX3RlbXBzKSxcbiAgbnJvdyA9IDIsIFxuICBieXJvdyA9IFRSVUUpICBcbiAgXG5jb2xuYW1lcyhwb3J0cmVlX3RlbXApIDwtIGMoXCJNb25cIiwgXCJUdWVcIiwgXCJXZWRcIiwgXCJUaHVcIiwgXCJGcmlcIiwgXCJTYXRcIiwgXCJTdW5cIikgXG4gIFxucm93bmFtZXMocG9ydHJlZV90ZW1wKSA8LSBjKFwiV2VlayAxXCIsIFwiV2VlayAyXCIpXG5cbnBvcnRyZWVfdGVtcFxuYGBgIn0= -->
 <pre class="r"><code>week1_temps &lt;- c(11, 10, 10, 10, 9, 9, 9)
 week2_temps &lt;- c(9, 9, 8, 11, 10, 12, 11)
 
-portree_temp &lt;- matrix(c(week1_temps, week2_temps), nrow = 2, byrow = TRUE)  
+portree_temp &lt;- matrix(
+  c(week1_temps, week2_temps),
+  nrow = 2, 
+  byrow = TRUE)  
   
 colnames(portree_temp) &lt;- c(&quot;Mon&quot;, &quot;Tue&quot;, &quot;Wed&quot;, &quot;Thu&quot;, &quot;Fri&quot;, &quot;Sat&quot;, &quot;Sun&quot;) 
   
@@ -1878,9 +1884,8 @@ Week 2   9   9   8  11  10  12  11</code></pre>
 <p>ii</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucG9ydHJlZV90ZW1wWzIsIF1cblxuYGBgIn0= -->
-<pre class="r"><code>portree_temp[2, ]
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucG9ydHJlZV90ZW1wWzIsIF1cbmBgYCJ9 -->
+<pre class="r"><code>portree_temp[2, ]</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiTW9uIFR1ZSBXZWQgVGh1IEZyaSBTYXQgU3VuIFxuICA5ICAgOSAgIDggIDExICAxMCAgMTIgIDExIFxuIn0= -->
 <pre><code>Mon Tue Wed Thu Fri Sat Sun 
@@ -1943,6 +1948,12 @@ and use a “verb”</p>
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEwXG4ifQ== -->
 <pre><code>[1] 10</code></pre>
 <!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmVyYih0KVxuYGBgIn0= -->
+<pre class="r"><code>verb(t)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiSW52YWxpZCBpbnB1dFwiXG4ifQ== -->
+<pre><code>[1] &quot;Invalid input&quot;</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1950,9 +1961,26 @@ and use a “verb”</p>
 <h2>Question 6</h2>
 <p>my brain has decided to stop functioning for the day</p>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2hlY2tfdmVjdG9ycyA8LSBmdW5jdGlvbih2ZWMxLCB2ZWMyKSB7XG4gIGlmIChsZW5ndGgodmVjMSkgIT0gbGVuZ3RoKHZlYzIpKSB7XG4gICAgcmV0dXJuKFwiRGlmZmVyZW50XCIpXG4gIH0gZWxzZSBpZiAoYWxsKHZlYzEgPT0gdmVjMikpIHtcbiAgICByZXR1cm4oXCJFeGFjdGx5IHRoZSBzYW1lXCIpXG4gIH0gZWxzZSBpZiAoYWxsKHNvcnQodmVjMSkgPT0gc29ydCh2ZWMyKSkpIHtcbiAgICByZXR1cm4oXCJUaGUgc2FtZVwiKVxuICB9IGVsc2Uge1xuICAgIHJldHVybihcIkRpZmZlcmVudFwiKVxuICB9XG59XG5gYGAifQ== -->
+<pre class="r"><code>check_vectors &lt;- function(vec1, vec2) {
+  if (length(vec1) != length(vec2)) {
+    return(&quot;Different&quot;)
+  } else if (all(vec1 == vec2)) {
+    return(&quot;Exactly the same&quot;)
+  } else if (all(sort(vec1) == sort(vec2))) {
+    return(&quot;The same&quot;)
+  } else {
+    return(&quot;Different&quot;)
+  }
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAicl9wcm9ncmFtbWluZ19odyIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCgojIyBRdWVzdGlvbiAxCmBgYHtyfQpHbGFzZ293X3dlYXRoZXIgPC0gbGlzdCgKICBUaHVyc2RheSA9IGxpc3QocmFpbmZhbGwgPSAiMW1tIiwgd2luZF9zcGVlZCA9ICI1LTEybXBoIiwgdGVtcGVyYXR1cmUgPSAiMTRvYyIpLAogIEZyaWRheSA9IGxpc3QocmFpbmZhbGwgPSAiMG1tIiwgd2luZF9zcGVlZCA9ICI1LTEybXBoIiwgdGVtcGVyYXR1cmUgPSAiMTJvYyIpLAogIFNhdHVyZGF5ID0gbGlzdChyYWluZmFsbCA9ICIwbW0iLCB3aW5kX3NwZWVkID0gIjQtMTJtcGgiLCB0ZW1wZXJhdHVyZSA9ICIxNDljIikKKQoKR2xhc2dvd193ZWF0aGVyCmBgYAoKIyNRdWVzdGlvbiAyCmkKYGBge3J9CkdsYXNnb3dfd2VhdGhlciRUaHVyc2RheSRyYWluZmFsbApgYGAKCmlpCmBgYHtyfQpHbGFzZ293X3dlYXRoZXIkRnJpZGF5JHdpbmRfc3BlZWQKYGBgCgppaWkKYGBge3J9CkdsYXNnb3dfd2VhdGhlciRUaHVyc2RheSR0ZW1wZXJhdHVyZQpgYGAKCiMjIFF1ZXN0aW9uIDMKYGBge3J9CndlZWsxX3RlbXBzIDwtIGMoMTEsIDEwLCAxMCwgMTAsIDksIDksIDkpCndlZWsyX3RlbXBzIDwtIGMoOSwgOSwgOCwgMTEsIDEwLCAxMiwgMTEpCgpwb3J0cmVlX3RlbXAgPC0gbWF0cml4KGMod2VlazFfdGVtcHMsIHdlZWsyX3RlbXBzKSwgbnJvdyA9IDIsIGJ5cm93ID0gVFJVRSkgIAogIApjb2xuYW1lcyhwb3J0cmVlX3RlbXApIDwtIGMoIk1vbiIsICJUdWUiLCAiV2VkIiwgIlRodSIsICJGcmkiLCAiU2F0IiwgIlN1biIpIAogIApyb3duYW1lcyhwb3J0cmVlX3RlbXApIDwtIGMoIldlZWsgMSIsICJXZWVrIDIiKQoKcG9ydHJlZV90ZW1wCmBgYAoKCiMjIFF1ZXN0aW9uIDQgCmkKYGBge3J9CnBvcnRyZWVfdGVtcFsyLCAzXQpgYGAKCmlpCmBgYHtyfQpwb3J0cmVlX3RlbXBbMiwgXQpgYGAKCmlpaQpgYGB7cn0KcG9ydHJlZV90ZW1wWyAsYygxLCAzLCA1KV0KYGBgCgojI1F1ZXN0aW9uIDUKYGBge3J9CnZlcmIgPC0gZnVuY3Rpb24oeCkgewogIGlmIChpcy5jaGFyYWN0ZXIoeCkpIHsKICAgIHJldHVybihwYXN0ZTAoIlRoZSBhbnN3ZXIgaXM6ICIsIHgpKQogIH0gZWxzZSBpZiAoaXMubnVtZXJpYyh4KSkgewogICAgaWYgKHggPCAxMCkgewogICAgICByZXR1cm4oeCkKICAgIH0gZWxzZSBpZiAoeCA+PSAxMCkgewogICAgICByZXR1cm4oeC8xMCkKICAgIH0KICB9IGVsc2UgewogICAgcmV0dXJuKCJJbnZhbGlkIGlucHV0IikKICB9Cn0KYGBgCgpDb3VsZG4ndCB0aGluayBvZiBhIGdvb2QgbmFtZSBhbmQgYmVzdCBwcmFjdGljZSBzYXlzIHdlIHNob3VsZCB0cnkgYW5kIHVzZSBhICJ2ZXJiIgpgYGB7cn0KdmVyYigidGVuIikKdmVyYig5KQp2ZXJiKDEwMCkKYGBgCgojIyBRdWVzdGlvbiA2CgpteSBicmFpbiBoYXMgZGVjaWRlZCB0byBzdG9wIGZ1bmN0aW9uaW5nIGZvciB0aGUgZGF5Cg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAicl9wcm9ncmFtbWluZ19odyIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpgYGAKCgojIyBRdWVzdGlvbiAxCmBgYHtyfQpHbGFzZ293X3dlYXRoZXIgPC0gbGlzdCgKICBUaHVyc2RheSA9IGxpc3QocmFpbmZhbGwgPSAiMW1tIiwgd2luZF9zcGVlZCA9ICI1LTEybXBoIiwgdGVtcGVyYXR1cmUgPSAiMTRvYyIpLAogIEZyaWRheSA9IGxpc3QocmFpbmZhbGwgPSAiMG1tIiwgd2luZF9zcGVlZCA9ICI1LTEybXBoIiwgdGVtcGVyYXR1cmUgPSAiMTJvYyIpLAogIFNhdHVyZGF5ID0gbGlzdChyYWluZmFsbCA9ICIwbW0iLCB3aW5kX3NwZWVkID0gIjQtMTJtcGgiLCB0ZW1wZXJhdHVyZSA9ICIxNDljIikKKQoKR2xhc2dvd193ZWF0aGVyCmBgYAoKIyNRdWVzdGlvbiAyCmkKYGBge3J9CkdsYXNnb3dfd2VhdGhlciRUaHVyc2RheSRyYWluZmFsbApgYGAKCmlpCmBgYHtyfQpHbGFzZ293X3dlYXRoZXIkRnJpZGF5JHdpbmRfc3BlZWQKYGBgCgppaWkKYGBge3J9CkdsYXNnb3dfd2VhdGhlciRUaHVyc2RheSR0ZW1wZXJhdHVyZQpgYGAKCiMjIFF1ZXN0aW9uIDMKYGBge3J9CndlZWsxX3RlbXBzIDwtIGMoMTEsIDEwLCAxMCwgMTAsIDksIDksIDkpCndlZWsyX3RlbXBzIDwtIGMoOSwgOSwgOCwgMTEsIDEwLCAxMiwgMTEpCgpwb3J0cmVlX3RlbXAgPC0gbWF0cml4KAogIGMod2VlazFfdGVtcHMsIHdlZWsyX3RlbXBzKSwKICBucm93ID0gMiwgCiAgYnlyb3cgPSBUUlVFKSAgCiAgCmNvbG5hbWVzKHBvcnRyZWVfdGVtcCkgPC0gYygiTW9uIiwgIlR1ZSIsICJXZWQiLCAiVGh1IiwgIkZyaSIsICJTYXQiLCAiU3VuIikgCiAgCnJvd25hbWVzKHBvcnRyZWVfdGVtcCkgPC0gYygiV2VlayAxIiwgIldlZWsgMiIpCgpwb3J0cmVlX3RlbXAKYGBgCgoKIyMgUXVlc3Rpb24gNCAKaQpgYGB7cn0KcG9ydHJlZV90ZW1wWzIsIDNdCmBgYAoKaWkKYGBge3J9CnBvcnRyZWVfdGVtcFsyLCBdCmBgYAoKaWlpCmBgYHtyfQpwb3J0cmVlX3RlbXBbICxjKDEsIDMsIDUpXQpgYGAKCiMjUXVlc3Rpb24gNQpgYGB7cn0KdmVyYiA8LSBmdW5jdGlvbih4KSB7CiAgaWYgKGlzLmNoYXJhY3Rlcih4KSkgewogICAgcmV0dXJuKHBhc3RlMCgiVGhlIGFuc3dlciBpczogIiwgeCkpCiAgfSBlbHNlIGlmIChpcy5udW1lcmljKHgpKSB7CiAgICBpZiAoeCA8IDEwKSB7CiAgICAgIHJldHVybih4KQogICAgfSBlbHNlIGlmICh4ID49IDEwKSB7CiAgICAgIHJldHVybih4LzEwKQogICAgfQogIH0gZWxzZSB7CiAgICByZXR1cm4oIkludmFsaWQgaW5wdXQiKQogIH0KfQpgYGAKCkNvdWxkbid0IHRoaW5rIG9mIGEgZ29vZCBuYW1lIGFuZCBiZXN0IHByYWN0aWNlIHNheXMgd2Ugc2hvdWxkIHRyeSBhbmQgdXNlIGEgInZlcmIiCmBgYHtyfQp2ZXJiKCJ0ZW4iKQp2ZXJiKDkpCnZlcmIoMTAwKQp2ZXJiKHQpCmBgYAoKIyMgUXVlc3Rpb24gNgoKbXkgYnJhaW4gaGFzIGRlY2lkZWQgdG8gc3RvcCBmdW5jdGlvbmluZyBmb3IgdGhlIGRheQpgYGB7cn0KY2hlY2tfdmVjdG9ycyA8LSBmdW5jdGlvbih2ZWMxLCB2ZWMyKSB7CiAgaWYgKGxlbmd0aCh2ZWMxKSAhPSBsZW5ndGgodmVjMikpIHsKICAgIHJldHVybigiRGlmZmVyZW50IikKICB9IGVsc2UgaWYgKGFsbCh2ZWMxID09IHZlYzIpKSB7CiAgICByZXR1cm4oIkV4YWN0bHkgdGhlIHNhbWUiKQogIH0gZWxzZSBpZiAoYWxsKHNvcnQodmVjMSkgPT0gc29ydCh2ZWMyKSkpIHsKICAgIHJldHVybigiVGhlIHNhbWUiKQogIH0gZWxzZSB7CiAgICByZXR1cm4oIkRpZmZlcmVudCIpCiAgfQp9CmBgYAogCiA=</div>
 
 
 
