@@ -42,7 +42,7 @@ SELECT
 	first_name, last_name
 FROM employees 
 ORDER BY last_name NULLS LAST;
-​
+
 --Question 8
 SELECT 
 	first_name, 
