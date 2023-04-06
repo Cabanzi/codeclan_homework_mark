@@ -1,11 +1,10 @@
 -- Question 1
 --(a)
 SELECT 
-	e. id,
 	e.first_name,
 	e.last_name,
 	t.name AS team_name
-FROM employees AS e LEFT JOIN teams AS t
+FROM employees AS e INNER JOIN teams AS t
 ON e.team_id = t.id
 
 -- (b)
@@ -136,7 +135,7 @@ HAVING CAST(t.charge_cost AS numeric) * count(e.id) > 5000
    SELECT count(DISTINCT employee_id) AS no_employees_multiple_committees
    FROM employees_committees;
    
- --6
+ -- 6
 SELECT COUNT(*) AS no_committee_employees
 FROM employees
 LEFT JOIN employees_committees
