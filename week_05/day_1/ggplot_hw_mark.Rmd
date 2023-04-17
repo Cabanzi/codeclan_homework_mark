@@ -1,0 +1,166 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(ggplot2)
+```
+
+```{r}
+col_scheme <- c("#E89FE9", "#50434F", "#B6A7B5", "#F9A472", "#BD7040")
+
+qb_revenue_breakdown <- CodeClanData::qb_revenue_breakdown
+
+qb_monthly_sales <- CodeClanData::qb_monthly_sales
+
+qb_competitors <- CodeClanData::qb_competitors
+
+qb_device_data <- CodeClanData::qb_device_data
+```
+
+Question 1: Take the data in the dataset qb_revenue_breakdown and make a stacked bar chart showing the sources of revenue across the two years in the dataset. 
+```{r}
+qb_revenue_breakdown %>% 
+  ggplot(aes(x = Year, y = Revenue, fill = Product)) +
+  geom_bar(stat = "identity") +
+  labs(
+    x = "Year",
+    y = "Revenue (£)",
+    title = "Product Revenue Breakdown 2018 vs 2019") +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 10),
+    legend.key = element_rect(fill = col_scheme, colour = "white"),
+    legend.key.size = unit(12, "pt"),
+  ) +
+  scale_fill_manual(values = col_scheme)
+```
+
+Question 2: Make a line chart showing monthly sales of the “flagship product” - the ‘KwikBit Unit 1’ - over the last year.  
+```{r}
+Kwikibit_2019_Sales <- qb_monthly_sales %>% 
+  filter(Cashflow == "Kwikbit Unit 1 Sales",
+          year(Date) == 2019 )
+```
+
+
+```{r}
+Kwikibit_2019_Sales %>% 
+ggplot(aes(x = Date, y = Amount, colour = Cashflow)) +
+  geom_line(size = 1, colour = col_scheme[1]) +
+  geom_point(size = 3, colour = col_scheme[2]) +
+  labs(
+       x = "Month", 
+       y = "Sales Total (£)",
+       title = "Monthly Sales of KwikBit Unit 1 - 2019") +
+  scale_x_date(date_labels = "%b", date_breaks = "1 month") +
+  scale_colour_manual(values = col_scheme[1]) +
+  theme_bw() +
+  theme(
+        text = element_text(size = 12),
+        plot.title = element_text(size = 14, hjust = 0.5),
+        axis.title = element_text(size = 12),
+        legend.position = "none"
+       )
+```
+
+
+Question 3: Make a line chart showing monthly revenue and costs over the last year.
+
+```{r}
+costs_and_revenue_2019 <- qb_monthly_sales %>% 
+  filter(Cashflow %in% c("Total Revenue","Cost"), 
+          year(Date) == 2019 
+           )
+
+costs_and_revenue_2019
+```
+
+```{r}
+costs_and_revenue_2019 %>% 
+ggplot(aes(x = Date, y = Amount, color = Cashflow)) +
+  geom_line() +
+  scale_x_date(date_labels = "%b %Y", date_breaks = "1 month")  +
+  labs(
+       x = "Month",
+       y = "Amount (£)",
+       title = "2019 Monthly Revenue Vs Costs",
+       color = "Cashflow") +
+  theme_minimal() +
+  theme(
+        axis.text = element_text(size = 10),
+        axis.title = element_text(size = 12, face = "bold"),
+        legend.position = "bottom",
+        legend.title = element_blank(),
+        legend.text = element_text(size = 10),
+        legend.key.size = unit(0.5, "cm")) +
+  scale_colour_manual(values = col_scheme)
+```
+
+
+Question 4: Show annual sales of personal fitness trackers over the last 5 years broken down by company as a ribbon plot
+```{r}
+qb_competitors %>% 
+ggplot(aes(x = Year, y = Revenue, fill = Company)) + 
+  geom_area(position='stack', alpha=0.7) +
+  labs( 
+       x = "Year", 
+       y = "Revenue (£)",
+       title = "Annual Sales of Competitor Personal Fitness Trackers") +
+  scale_y_continuous(labels = scales::comma) +
+  scale_fill_manual(values=col_scheme)
+```
+
+Question 5:
+```{r}
+qb_competitors %>% 
+ggplot(aes(x = Year, y = Revenue, colour = Company)) +
+  geom_line() +
+  geom_point() +
+  scale_colour_manual(values = col_scheme) +
+  labs(title = "Annual Sales of Competitor Personal Fitness Trackers",
+       x = "Year",
+       y = "Revenue (£)") +
+  scale_y_continuous(labels = scales::comma) +
+  theme_bw() +
+  theme(
+        plot.title = element_text(size = 14, face = "bold"),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10))
+```
+
+Question 6: Now the company wants to compare the number of steps that their device counts vs. their competitors. Make a line graph of the number of steps throughout time, and use faceting to compare between companies and people
+
+
+```{r}
+qb_device_data_hourly <- qb_device_data %>% 
+  group_by(device, hours) %>%
+  summarise(step_count = sum(counts), .groups = "drop")
+
+qb_device_data_hourly
+```
+
+```{r}
+qb_device_data_hourly %>% 
+ggplot(aes(x = hours, y = step_count, colour = device)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  facet_wrap(~ device) +
+  labs(
+       x = "Hours",
+       y = "Total Steps",
+       title = "Number Of Steps Counted Per Hour By Device ") +
+  scale_colour_manual(values = col_scheme) +
+  theme_bw() +
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.position = "bottom",
+        legend.text = element_text(size = 12))
+```
+
+
+
