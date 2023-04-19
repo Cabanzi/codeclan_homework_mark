@@ -29,7 +29,7 @@ ui <- fluidPage(
       ), 
       
       selectInput(inputId = "book_num",
-                  label = "Select a book:",
+                  label = "Select a Book:",
                   choices = c(1:5),
                   selected = 1
       )
