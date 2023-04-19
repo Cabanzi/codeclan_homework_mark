@@ -27,6 +27,7 @@ qb_revenue_breakdown %>%
     x = "Year",
     y = "Revenue (£)",
     title = "Product Revenue Breakdown 2018 vs 2019") +
+  theme_minimal() +
   theme(
     plot.title = element_text(size = 14, face = "bold"),
     axis.title = element_text(size = 12),
@@ -139,7 +140,7 @@ Question 6: Now the company wants to compare the number of steps that their devi
 qb_device_data_hourly <- qb_device_data %>% 
   group_by(device, hours) %>%
   summarise(step_count = sum(counts), .groups = "drop")
-
+qb_device_data
 qb_device_data_hourly
 ```
 
@@ -162,5 +163,24 @@ ggplot(aes(x = hours, y = step_count, colour = device)) +
         legend.text = element_text(size = 12))
 ```
 
+Answer 
+
+```{r}
+qb_device_data %>% 
+  ggplot(aes(x = decimal_hour, y = counts, colour = device)) +
+  geom_line() + 
+  facet_grid(id ~ device) +
+  labs(
+       x = "Hours",
+       y = "Total Steps",
+       title = "Number Of Steps Counted Per Hour By Device ") +
+  scale_colour_manual(values = col_scheme) +
+  theme_bw() +
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        legend.position = "bottom",
+        legend.text = element_text(size = 12))
+```
 
 
