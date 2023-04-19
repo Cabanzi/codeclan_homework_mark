@@ -183,4 +183,3 @@ qb_device_data %>%
         legend.text = element_text(size = 12))
 ```
 
-

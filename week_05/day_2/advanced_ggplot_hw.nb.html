@@ -1764,31 +1764,12 @@ library(tidyverse)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFja3BhY2sgPC0gQ29kZUNsYW5EYXRhOjpiYWNrcGFja1xuXG5nbGltcHNlKGJhY2twYWNrKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFja3BhY2sgPC0gQ29kZUNsYW5EYXRhOjpiYWNrcGFja1xuXG5nbGltcHNlKGJhY2twYWNrKVxubmFtZXMoYmFja3BhY2spXG5gYGAifQ== -->
 <pre class="r"><code>backpack &lt;- CodeClanData::backpack
 
-glimpse(backpack)</code></pre>
+glimpse(backpack)
+names(backpack)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMTAwXG5Db2x1bW5zOiA5XG4kIGJhY2twYWNrX3dlaWdodCA8aW50PiA5LCA4LCAxMCwgNiwgOCwgNSwgOCwgNCwgNSwgMiwgOCwgMjEsIDExLCAxMSwgMTIsIDExLCAxMywgNiwgMTAsIDUsIDIwLCAxNCwgMTEsIDE1LCAxMCwg4oCmXG4kIGJvZHlfd2VpZ2h0ICAgICA8aW50PiAxMjUsIDE5NSwgMTIwLCAxNTUsIDE4MCwgMjQwLCAxNzAsIDE4NSwgMTMwLCAxMjAsIDEzNSwgMTYwLCAxNzAsIDE3MCwgMTI1LCAxNzUsIDE0NSwgMTA14oCmXG4kIHJhdGlvICAgICAgICAgICA8ZGJsPiAwLjA3MjAwMDAsIDAuMDQxMDI1NiwgMC4wODMzMzMzLCAwLjAzODcwOTcsIDAuMDQ0NDQ0NCwgMC4wMjA4MzMzLCAwLjA0NzA1ODgsIDAuMDIxNjIxNiwg4oCmXG4kIGJhY2tfcHJvYmxlbXMgICA8aW50PiAxLCAwLCAxLCAwLCAwLCAwLCAwLCAxLCAwLCAwLCAwLCAwLCAwLCAxLCAxLCAwLCAxLCAwLCAxLCAwLCAwLCAxLCAwLCAwLCAwLCAxLCAwLCAwLCAwLCAx4oCmXG4kIG1ham9yICAgICAgICAgICA8ZmN0PiBCaW8sIFBoaWxvc29waHksIEdSQywgQ1NDLCBFRSwgSGlzdG9yeSwgQ00sIEFSQ0UsIEJpbywgQmlvLCBCdXMsIE1FLCBDUEUsIENQRSwgQ1MsIENQRSwg4oCmXG4kIHllYXIgICAgICAgICAgICA8aW50PiAzLCA1LCA0LCA2LCAyLCAwLCAzLCA1LCA0LCA1LCAzLCA1LCA0LCA0LCAzLCA0LCA0LCAzLCAzLCAzLCAyLCAyLCA1LCA1LCAzLCAxLCA0LCAyLCAyLCAx4oCmXG4kIHNleCAgICAgICAgICAgICA8ZmN0PiBGZW1hbGUsIE1hbGUsIEZlbWFsZSwgTWFsZSwgRmVtYWxlLCBNYWxlLCBNYWxlLCBGZW1hbGUsIEZlbWFsZSwgRmVtYWxlLCBGZW1hbGUsIE1hbGUsIE1h4oCmXG4kIHN0YXR1cyAgICAgICAgICA8ZmN0PiBVLCBVLCBVLCBHLCBVLCBHLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBVLCBV4oCmXG4kIHVuaXRzICAgICAgICAgICA8aW50PiAxMywgMTIsIDE0LCAwLCAxNCwgMCwgMTUsIDE4LCAxNCwgOCwgMTUsIDEyLCAxNiwgMTYsIDEyLCAxNiwgMTYsIDE2LCAxNywgMTQsIDE2LCAxMiwgMTQs4oCmXG4ifQ== -->
-<pre><code>Rows: 100
-Columns: 9
-$ backpack_weight &lt;int&gt; 9, 8, 10, 6, 8, 5, 8, 4, 5, 2, 8, 21, 11, 11, 12, 11, 13, 6, 10, 5, 20, 14, 11, 15, 10, …
-$ body_weight     &lt;int&gt; 125, 195, 120, 155, 180, 240, 170, 185, 130, 120, 135, 160, 170, 170, 125, 175, 145, 105…
-$ ratio           &lt;dbl&gt; 0.0720000, 0.0410256, 0.0833333, 0.0387097, 0.0444444, 0.0208333, 0.0470588, 0.0216216, …
-$ back_problems   &lt;int&gt; 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1…
-$ major           &lt;fct&gt; Bio, Philosophy, GRC, CSC, EE, History, CM, ARCE, Bio, Bio, Bus, ME, CPE, CPE, CS, CPE, …
-$ year            &lt;int&gt; 3, 5, 4, 6, 2, 0, 3, 5, 4, 5, 3, 5, 4, 4, 3, 4, 4, 3, 3, 3, 2, 2, 5, 5, 3, 1, 4, 2, 2, 1…
-$ sex             &lt;fct&gt; Female, Male, Female, Male, Female, Male, Male, Female, Female, Female, Female, Male, Ma…
-$ status          &lt;fct&gt; U, U, U, G, U, G, U, U, U, U, U, U, U, U, U, U, U, U, U, U, U, U, U, U, U, U, U, U, U, U…
-$ units           &lt;int&gt; 13, 12, 14, 0, 14, 0, 15, 18, 14, 8, 15, 12, 16, 16, 12, 16, 16, 16, 17, 14, 16, 12, 14,…</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoYmFja3BhY2spXG5gYGAifQ== -->
-<pre class="r"><code>names(backpack)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiYmFja3BhY2tfd2VpZ2h0XCIgXCJib2R5X3dlaWdodFwiICAgICBcInJhdGlvXCIgICAgICAgICAgIFwiYmFja19wcm9ibGVtc1wiICAgXCJtYWpvclwiICAgICAgICAgICBcInllYXJcIiAgICAgICAgICAgXG5bN10gXCJzZXhcIiAgICAgICAgICAgICBcInN0YXR1c1wiICAgICAgICAgIFwidW5pdHNcIiAgICAgICAgICBcbiJ9 -->
-<pre><code>[1] &quot;backpack_weight&quot; &quot;body_weight&quot;     &quot;ratio&quot;           &quot;back_problems&quot;   &quot;major&quot;           &quot;year&quot;           
-[7] &quot;sex&quot;             &quot;status&quot;          &quot;units&quot;          </code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Question 2: What is the distribution of backpack weights that
