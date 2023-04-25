@@ -1,0 +1,97 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(gtools)
+```
+
+```{r}
+titanic <- read_csv("data/titanic.csv")
+```
+# 1.1 The Titanic
+```{r}
+glimpse(titanic)
+```
+```{r}
+titanic_surviors <- titanic%>% 
+  mutate(crew = ifelse(class %in% c("engineering crew", "victualling crew" ,"restaurant staff", "deck crew"),TRUE, FALSE)) %>% 
+  select(survived, crew)
+```
+
+#Probability of Crew Survival
+```{r}
+titanic_surviors %>% 
+  filter(crew == TRUE) %>% 
+  summarise(prob = sum(survived == "yes")/ n())
+```
+
+#Probability of Passenger Survival
+```{r}
+titanic_surviors %>% 
+  filter(crew == FALSE) %>% 
+  summarise(prob = sum(survived == "yes")/ n())
+```
+From these results we can see that statically speaking that passengers had a higher probability of surviving
+
+## 1.2 Probability Consolidation Questions
+
+#Question 1: If I roll a six-sided dice once, what is the probability of getting a number less than 5?
+```{r}
+4/6
+```
+
+# Question 2: How many outcomes are there in the sample space of an experiment in which we toss three dice?
+```{r}
+s_three_dice <- rolldie(3, nsides = 6)
+
+s_three_dice
+```
+There are a possible 216 outcomes
+
+Question 3: n an experiment where we roll four dice
+
+```{r}
+s_four_dice <- rolldie(4, nsides = 6) %>% 
+  mutate(total = X1 + X2 + X3 + X4) %>% 
+  filter(total == 5 | total == 6 | total == 7)
+  
+
+s_four_dice 
+```
+i) there are 34 outcomes where the total mof the four dice is equal to 5, 6 or 7
+
+```{r}
+34/1296
+```
+ ii) the probability of this is 0.02623457
+ 
+ iii) The assumptions made are that: 
+ -fair 6 sided dice are used. 
+ -all dice are thrown at the same time
+
+## Question 4: Five chairs are placed in a row in a room, along with five people of differing height. The people sit down randomly on the chairs. What is the probability that they sit in order of decreasing height, left to right?
+
+```{r}
+height_cm <- c(177, 180, 157, 164, 186)
+
+length(height_cm)
+
+seating_arrangements <-  as_tibble(
+  permutations(n = length(height_cm),
+               r = 5,
+               v = height_cm,
+               repeats.allowed = FALSE)
+)
+
+seating_arrangements
+```
+
+there are 120 possible outcomes for seating arrangement but only 1 where they sit from tallest to smallest. therefore the probability of this is 1/120 or 0.008333333
+
+```{r}
+1/120
+```
+

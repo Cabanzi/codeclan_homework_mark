@@ -97,6 +97,8 @@ server <- function(input, output) {
     
   })
   
+  #Added this plot so the user can have a clear understanding of the of what factions have the most deaths in each book
+  # Hopefully this gives a better understanding of how successful they are in each book.
 
   output$death_table <- renderTable({
     
