@@ -61,7 +61,7 @@ s_four_dice <- rolldie(4, nsides = 6) %>%
 
 s_four_dice 
 ```
-i) there are 34 outcomes where the total mof the four dice is equal to 5, 6 or 7
+i) there are 34 outcomes where the total of the four dice is equal to 5, 6 or 7
 
 ```{r}
 34/1296
