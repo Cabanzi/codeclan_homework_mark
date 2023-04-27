@@ -1,0 +1,76 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+```
+
+#Question 1:
+```{r}
+ames <- read_csv("data/ames.csv") %>% 
+  clean_names()
+  
+```
+```{r}
+glimpse(ames)
+```
+
+Question 2:
+```{r}
+ames %>% 
+  ggplot(aes(x = lot_area)) +
+  geom_histogram(colour = "white", bins = 30)
+```
+the data doesn't appear to be normally distributed, from looking at the scale I believe that it is highly skewed tp the right
+
+Question 3: 
+```{r}
+bootstrap_ames_200 <- ames %>%
+  rep_sample_n(size = 200, replace = TRUE, reps = 5000) %>%
+  summarise(
+    mean_lot_area = mean(lot_area)
+  )
+
+bootstrap_ames_200
+```
+
+```{r}
+bootstrap_ames_200 %>% 
+  ggplot(aes(x = mean_lot_area)) +
+  geom_histogram(bins = 25, colour = "white", fill = "blue")
+```
+I would say this is closer to a normal distribution but still looks moderately skewed to the right
+
+Question 4: 
+```{r}
+bootstrap_ames_200 %>% 
+  summarise(
+    mean = mean(mean_lot_area),
+    lower_bound = quantile(mean_lot_area, prob = 0.025),
+    upper_bound = quantile(mean_lot_area, prob = 0.975)
+  )
+```
+
+Question 5: 
+```{r}
+bootstrap_ames_200 %>% 
+  summarise(
+    mean = mean(mean_lot_area),
+    lower_bound = quantile(mean_lot_area, prob = 0.005),
+    upper_bound = quantile(mean_lot_area, prob = 0.995)
+  )
+```
+The 99% is bigger because it takes in more data 
+
+Question 6:
+```{r}
+ames %>%
+  summarise(
+    mean_lot_area = mean(lot_area)
+  )
+```
+
+

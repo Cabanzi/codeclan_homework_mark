@@ -1,0 +1,42 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## Terms
+Population
+  Everything that your data refers to
+  i.e if I was analaysing the London Marathon finishers the population would be the partcipants
+
+Parameters
+  properties
+
+Sample
+  a subset of the poplulation 
+  i.e the starting wave in the race 
+  (an important goal for sampling is that it should be represenative)
+  I might only want to see the elite runners
+
+Statistics.    --      (Point estimate)
+  statistics **are** estimates
+
+
+Sampling error
+- the difference between the summary stats - the sample summary stats
+
+Central limit theorem
+-if you take _sufficently_ large samples from a poplulation, the samples will be normally 
+distributed, even if the popluation isn't normally distributed 
+- often 30 is enough
+- but sometimes it's not
+
+Resampling
+- replicating the sampling the protocal 
+
+Bootstrap
+
+
+Sampling distribution
+
+
+Standard error

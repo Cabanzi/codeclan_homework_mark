@@ -1,0 +1,148 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## Bootstrapping and confidence intervals
+
+### Learning Objectives 
+
+- Understand the concepts
+
+
+```{r}
+summary_popn
+summary_sample_200
+```
+
+_confidence interval_
+
+(__not right__) 
+the range of values whitin which there is a 95% chance that the true population value lies. 
+
+Strictly, we can't really say that
+
+95% CI: really it's about the _confidence_ we have in our _CI_, as opposed to the confidence we 
+would like to have in our estimate
+
+```{r}
+32.33624 + c(-1.770078, 170078)
+```
+
+
+Think of this as like fishing with either a spear or a net.
+
+The 'spear' is the point estimate,
+
+while rhe 'net' is the confidence interval. 
+
+We generally talk in terms of a 95% CI or 99% CI
+
+To be more certain of catching a fish, you have to make your net bigger. 
+To have more confidence in the point estimate, you have to make the confidence interavl wider. 
+
+### Bootstrapping 
+
+Re-sampling __with__ replacement 
+
+Why would we ever replace our samples? 
+
+```{r}
+telco_200 <- read_csv("4_confidence_intervals/data/telecomms_churn_200_sample.csv") %>% 
+  clean_names()
+
+glimpse(telco_200)
+```
+
+```{r}
+bootstrap_resample_200 <- sample_200 %>%
+  rep_sample_n(size = 200, replace = TRUE, reps = 5000) %>%
+  summarise(
+    mean_tenure = mean(tenure)
+  )
+
+bootstrap_resample_200
+```
+
+Task - 5 mins
+How close is the bootstrapped sampling distribution of mean(tenure) to the one shown above?
+Plot a histogram of the bootstrapped sampling distribution
+Calculate the standard error in mean(tenure) and compare it with the previous value 1.72 months [remember: this is just the sd() of the sampling distribution]
+
+```{r}
+bootstrap_resample_200 %>% 
+  ggplot(aes(x = mean_tenure)) +
+  geom_histogram(bins = 25, colour = "white", fill = "blue")
+```
+
+```{r}
+std_error <- bootstrap_resample_200 %>% 
+  summarise(
+    se_mean_tenure = sd(mean_tenure)
+    )
+```
+1. We resample with replacement, samples of the same size of our orginal sample
+  - we replace because if we didn't all reps would be identical 
+      - if we resample beyond the size of our sample...
+        -consider sampling 400
+  - If we resample with smaller sizes we're giving up some possible information 
+  - Rare values are rare, common values are common
+      - with replacement, we are placing heavier weight on the common values
+
+## CI from bs
+
+```{r}
+bootstrap_resample_200 %>% 
+  ggplot(aes(x = mean_tenure)) +
+  geom_histogram(bins = 25, colour = "white", fill = "blue")
+```
+
+A confidence interval is an interval 
+that means it is composed of two limits 
+
+we want a 95%CI
+(0.025 = 2.5%)
+```{r}
+bootstrap_resample_200 %>% 
+  summarise(
+    mean = mean(mean_tenure),
+    lower_bound = quantile(mean_tenure, prob = 0.025),
+    upper_bound = quantile(mean_tenure, prob = 0.975)
+  )
+```
+
+### Working using the `infer` package
+
+1. `specify()` which variable we are interested in (`tenure`) 
+2. `generate()` our replicate resamples
+3. `calculate()` the summary stats we are interested in
+
+How many obs do we have for each replicate?
+It's 200 
+BECAUSE we are bootstrapping 
+```{r}
+infer_resample <- telco_200 %>% 
+  specify(response = tenure) %>% 
+  generate(reps = 5000, type = 'bootstrap') %>% 
+  calculate(stat = "mean")
+```
+### Calculate our CI
+
+we want to get the standard error of our sample means 
+
+```{r}
+infer_ci_95 <- infer_resample %>% 
+  get_confidence_interval(level = 0.95, type = "percentile") 
+```
+
+```{r}
+infer_resample %>% 
+  visualise(bins = 25) +
+  shade_confidence_interval(endpoints = infer_ci_95)
+```
+
+```{r}
+infer_resample %>% 
+  summarise(mean = mean(stat)) 
+```
+
