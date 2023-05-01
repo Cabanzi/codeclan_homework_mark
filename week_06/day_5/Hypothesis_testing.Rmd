@@ -1,0 +1,225 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(infer)
+
+```
+## 1.1
+# Question1:
+```{r}
+glimpse(msleep)
+```
+# Question 2: 
+
+Step 1: 
+H0: mean_sleep_total == 7
+Ha: mean_sleep_total != 7
+
+Significance level for this test: 0.05
+
+Step 2:
+```{r}
+observed_stat_sleep <- msleep %>% 
+  summarise(mean_sleep_total = mean(sleep_total))
+
+observed_stat_sleep
+```
+
+Step 3:
+```{r}
+null_distribution_sleep <- msleep%>% 
+  specify(response = sleep_total) %>%  
+  hypothesise(null = "point", mu =  7	) %>%  
+  generate(reps = 2000, type = "bootstrap") %>%  
+  calculate(stat ="mean")
+  
+```
+
+```{r}
+null_distribution_sleep %>% 
+  visualise(bins = 25)
+```
+
+Step 4: 
+```{r}
+null_distribution_sleep %>% 
+  visualise(bins = 25) + 
+  shade_p_value(obs_stat = observed_stat_sleep$mean_sleep_total,
+                direction = "both")
+```
+
+Step 5:
+```{r}
+null_distribution_sleep %>% 
+ get_p_value(obs_stat = observed_stat_sleep$mean_sleep_total,
+                direction = "both")
+```
+
+Since the P value is 0 I would reject the HO and state the the average sleep for other animals is significantly different from other animals.
+
+However the fact that I got 0 makes me question if I've made a mistake somewhere 
+
+# Question 3:
+```{r}
+diet_sleep <- msleep %>% 
+  filter(vore == "omni" | vore == "herbi") 
+
+diet_sleep
+```
+H0: Mean sleep omnivore - mean sleep herbivore == 0
+Ha: Mean sleep omnivore - mean sleep herbivore > 0
+
+Significance level: 0.05
+
+```{r}
+diet_sleep %>% 
+  ggplot(aes(y = sleep_total, x = vore)) +
+  geom_boxplot()
+```
+
+```{r}
+observed_stat_diet <- diet_sleep %>% 
+  specify(response = sleep_total, explanatory = vore) %>% 
+  calculate(stat = "diff in means", order = c("omni", "herbi"))
+
+observed_stat_diet
+```
+
+```{r}
+null_distribution_diet <- diet_sleep %>% 
+  specify(response = sleep_total, explanatory = vore) %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in means", order = c("omni", "herbi"))
+
+head(null_distribution)
+```
+
+```{r}
+null_distribution_diet %>% 
+  visualise() +
+  shade_p_value(obs_stat = observed_stat_diet$stat,
+                direction = "greater")
+```
+
+```{r}
+null_distribution_diet %>% 
+  get_p_value(obs_stat = observed_stat_diet$stat,
+                direction = "greater")
+```
+
+threshold was 0.05.
+p = 0.135	 which is higher than our threshold
+
+Failing to reject H0 - we cannot say that  Mean sleep omnivore - mean sleep 
+herbivore == 0
+
+Therefore we can say that omnivores do sleep significantly longer than herbivores.
+
+# Question 4: 
+```{r}
+domesticate_vs_wild <- msleep %>% 
+  mutate(is_domesticated = ifelse(conservation == "domesticated", "domesticated", "wild")) %>% 
+  drop_na(is_domesticated)
+
+domesticate_vs_wild
+```
+H0: prop_domesticated_animal == 0.05 
+Ha: prop_domesticated_animal > 0.05 
+
+alpha (significance level) = 0.05
+
+```{r}
+
+observed_stat_domesticated <- domesticate_vs_wild %>% 
+  summarise(prop = sum(is_domesticated == "domesticated")/ n())
+
+observed_stat_domesticated
+```
+
+```{r}
+null_distribution_domesticated <- domesticate_vs_wild %>% 
+  specify(response = is_domesticated, success = "domesticated") %>% 
+  hypothesise(null = "point", p = 0.05) %>% 
+  generate(reps = 2000, type = "draw") %>% 
+  calculate(stat = "prop") 
+```
+
+```{r}
+null_distribution_domesticated %>% 
+  visualise(bins = 10) +
+  shade_p_value(obs_stat = observed_stat_domesticated$prop,
+                direction = "greater")
+```
+
+```{r}
+null_distribution_domesticated %>% 
+  get_p_value(obs_stat = observed_stat_domesticated$prop,
+                direction = "greater")
+```
+
+threshold was 0.05.
+p = 0	 which is lower than our threshold
+
+Therefore we can reject H0 and assume that the proportion of domesticated animals is greater than 5%
+
+(Think I have also done this wrong as I think it's very unlikely that both P values would be 0)
+
+## 1.2
+
+# Question 1:
+* Test: One-sample proportion test
+
+* H0: p < = 0.4 (less than or equal to 40% of the town’s population knows of the coffee shop)
+  Ha: p > 0.4 (more than 40% of the town’s population knows of the coffee shop)
+
+* Method: Draw
+
+# Question 2:
+* Test: Two-sample proportion test
+
+* H0: pA <= pB (the proportion of clicks for the banner in group A is less than or equal to the proportion of clicks  for the banner in group B)
+  Ha: pA > pB (the proportion of clicks in group A is greater than the proportion of clicks  for the banner in group B)
+
+* Method: Draw
+
+# Question 3: 
+* Test: One-sample t-test
+
+* H0: mean width of car parts == 145mm
+  Ha: mean width of car parts != 145mm
+
+* Method: Bootstrap 
+
+## 1.3 
+# Question 1:
+Coffee shop problem. Significance level: 0.05, calculated p-value: 0.07
+
+Since the p-value of 0.07 is greater than the significance level of 0.05 we cannot reject 
+The H0 (less than or equal to 40% of the town’s population knows of the coffee shop)
+
+Therefore we can assume that more than 40% of the town know about the shop.
+
+# Question 2:
+Website company problem. Significance level: 0.01, p-value: 0.006
+
+Since the p-value 0.006 is less than the Significance level: 0.01 we can reject the H0
+(the proportion of clicks for the banner in group A is less than or equal to the 
+proportion of clicks  for the banner in group B) and assume the Ha to be true.
+
+Therefore, the website company should consider positioning the banner at the top of 
+the page for better results.
+
+# Question 3:
+Manufacturing company problem. Significance level: 0.05, p-value: 0.55
+
+Since the p-value of 0.055 is greater than the significance level of 0.05 we cannot reject 
+the H0: mean width of car parts == 145mm. 
+
+Therefore we can assume that the mean width of the parts being manufactured is 145mm
+and the manufacturing process has drifted from the standard.
