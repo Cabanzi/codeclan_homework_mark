@@ -1,0 +1,246 @@
+---
+title: "NYC Citi Bikes Report"
+output:
+  html_document: default
+  pdf_document: default
+date: "2023-05-03"
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(lubridate)
+library(tsibbledata)
+library(hrbrthemes)
+library(leaflet)
+nyc_bikes_df <- nyc_bikes
+```
+
+```{r}
+nyc_bikes_df <- nyc_bikes_df %>% 
+  mutate(
+    day = wday(start_time, label = TRUE, abbr = FALSE),
+    month = month(start_time, label = TRUE, abbr = TRUE),
+    year = year(start_time),
+    start_hour = hour(start_time))
+```
+
+# Introduction 
+
+This report analyses the `nyc_bikes` data set. This is sample of bike trips which 
+provides information on rider demographics, along with when and where they used 
+the bike. There is a sample size of 4,268 trips. 
+
+
+When analysing this data, some ethical considerations were adhered to, such as:
+
+1. Privacy: The data set contains personal information such as birth year and 
+gender. It's important to ensure that the data is anonymized, and that any 
+analysis does not allow for the identification of individuals.
+
+2. Informed consent: Riders may not be aware that their data is being collected 
+and used. It is important to ensure that the data has been collected with the 
+informed consent of the individuals.
+
+3. Data quality: It is important to verify that the data is accurate and reliable 
+before drawing any conclusions from it. It's essential to check the data for any 
+outliers or errors that may affect the accuracy of the analysis.
+
+
+A key component of the Citi Bike business model is the subscription scheme where
+users pay an annual fee for unlimited access of the bikes. 
+
+This report will look to answer the following question which will boost one of the
+key performance indicators (KPIs) which is subscribers: 
+"How do we boost subscriber growth?"
+
+## 1: Breakdown of User Demographics
+```{r}
+# create age_demographic column
+nyc_bikes_df$age_demographic <- 
+  ifelse(2018 - nyc_bikes_df$birth_year >= 18 & 2018 - nyc_bikes_df$birth_year <= 24, "18-24",
+  ifelse(2018 - nyc_bikes_df$birth_year >= 25 & 2018 - nyc_bikes_df$birth_year <= 34, "25-34",
+  ifelse(2018 - nyc_bikes_df$birth_year >= 35 & 2018 - nyc_bikes_df$birth_year <= 44, "35-44",
+  ifelse(2018 - nyc_bikes_df$birth_year >= 45 & 2018 - nyc_bikes_df$birth_year <= 54, "45-54",
+  ifelse(2018 - nyc_bikes_df$birth_year >= 55 & 2018 - nyc_bikes_df$birth_year <= 64, "55-64",
+  ifelse(2018 - nyc_bikes_df$birth_year >= 65, "65+", NA))))))
+
+# remove rows with birth year 1887 or 1888
+nyc_bikes_df <- nyc_bikes_df[!(nyc_bikes_df$birth_year == 1887 | 
+                                 nyc_bikes_df$birth_year == 1888),]
+
+
+
+subscriber_demographic <- nyc_bikes_df %>% 
+  filter(type == "Subscriber", gender != "Unknown") %>% 
+  select(gender, age_demographic) %>% 
+  group_by(gender) %>% 
+  count(age_demographic, name = "no_trips")  %>% 
+  ggplot(aes(x = age_demographic, y = no_trips, fill = gender )) +
+  geom_col() +
+  labs(
+    x = "Age Demographic",
+    y = "Number of Trips",
+    title = "Breakdown of User Demographics") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 10),
+    legend.key.size = unit(12, "pt"))
+
+subscriber_demographic
+```
+
+This graph breaks down the user demographics of who is making use of the service. 
+
+The data highlights that the majority of users are male, with the main age 
+demographic being the 25-34 age range. Potential areas for growth are:
+
+* Increasing the amount of female subscribers 
+* Increasing the about of subscribers in the 18-24 & 65+ demographic. 
+
+Recommendations to increase subscriber growth KPI in these areas will be discussed 
+later on in the report. 
+
+## 2: Subscriber Useage in 2018
+
+```{r}
+sub_month <- nyc_bikes_df %>% 
+  filter(type == "Subscriber") %>% 
+  select(month) %>% 
+  count(month, name = "no_trips")  %>% 
+  ggplot(aes(x = month, y = no_trips, group = 1)) +
+  geom_line() +
+  geom_point(shape=21, color="black", fill="#69b3a2", size=2) +
+  labs(
+    x = "Month",
+    y = "Number of Trips",
+    title = "Subscriber Useage in 2018") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold"),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10),
+    legend.title = element_blank(),
+    legend.text = element_text(size = 10),
+    legend.key.size = unit(12, "pt"))
+
+sub_month
+```
+
+There is an increase in the amount of trips taken by subscribers in the summer months 
+reaching a peak in August. This suggests users are more likely to use the service
+in warmer weather. 
+
+Further in the report, potential strategies to increase engagement in the winter 
+month will be reviewed. 
+
+## 3. Peak Times
+
+```{r}
+peak_times_hr <- nyc_bikes_df %>% 
+  count(start_hour) %>% 
+  ggplot(aes(x = start_hour, y = n, group = 1 )) +
+  geom_line() +
+  geom_point(shape=21, color="black", fill="#69b3a2", size=2) +
+  theme_ipsum() +
+  labs(x = "Time (24h)", 
+       y = "Number of Trips", 
+       title = "Peak Times") +
+  scale_x_continuous(breaks = seq(0, 23, by = 2))
+
+
+peak_times_hr
+```
+
+```{r}
+peak_times_day <- nyc_bikes_df %>% 
+  count(day) %>% 
+  ggplot(aes(x = day, y = n, group = 1 )) +
+  geom_line() +
+  geom_point(shape=21, color="black", fill="#69b3a2", size=2) +
+  theme_ipsum() +
+  labs(x = "Day", 
+       y = "Number of Trips", 
+       title = "Number of Trips per Day") +
+  scale_x_discrete(limits = 
+          c("Monday", "Tuesday", "Wednesday", "Thursday",
+            "Friday", "Saturday", "Sunday"))
+
+peak_times_day
+```
+
+The previous graphs suggests that subscribers are using the service to commute 
+to and from work. The graphs also show that there is a sharp decrease in usage
+over the weekend. 
+
+Therefore, areas of improvement from the data could be to capitalise on the 
+commuter cohort, and to increase weekend use.
+
+The aforementioned improvements will be further discussed in the conclusion 
+section of the report.
+
+
+## Location Popularity
+
+```{r}
+station_location_map <- nyc_bikes_df %>% 
+  leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(
+      lng = ~start_long,
+      lat = ~start_lat,
+      clusterOptions = markerClusterOptions()
+      )
+
+station_location_map
+```
+
+The majority of stations are located within Jersey City, with the borough of
+Hoboken containing lowest amount stations; this is despite it being surrounded by areas 
+with high concentration levels of Citi Bike stations. 
+
+
+
+## Conclusions 
+
+Based on an analysis of the Citi Bike data set, the following distinctions were analysed:
+
+- The vast majority of subscribers are male 
+- The main age demographic of subscribers are 25-34, with those aged 65+ and 18-24 using the service the least
+- The summer months are busier than the winter months, declining from August onwards
+- Subscribers are most likely to use the service on weekdays, which suggests a vast proportion 
+of subscribers are using the service for commuting 
+- Most of the stations are located in Jersey City, with a lack of stations within the nearby
+Hoboken district 
+
+From this analysis, and the aforementioned distinctions, the following recommendations are 
+suggested in order to drive the KPI of subscribers:
+
+1. A targeted marketing campaign for females, in order to boost female subscriber growth. 
+Citi Bikes should also lean in to the already offered community events, and push out more 
+marketing to attract a younger cohort of subscribers. Community events which have a focus on 
+a female audience, and showcasing female rider safety, should feature more prominently. 
+
+2. The subscriber system should have a young persons discount to drive sales in the 18-24 age
+bracket and a 65+ discount. 
+
+3. In order to boost Winter subscription use, a specific seasonal campaign should be implemented. 
+For example, if a customer were to sign up for a year in November, they would receive a discount. 
+
+4. Citi Bikes should lean in to the commuter market, and offer a commuter pass to encourage 
+more commuters to cycle to work. Marketing campaigns could draw on the health, environment, and wellness benefits, and the pass would offer riders two rides a day at a discounted price compared to the standard
+subscription.
+
+5. Hoboken is a high population area, and is surrounded by popular districts Citi Bikes 
+should implement more stations within this area to drive user growth and to allow 
+the population the opportunity to use Citi Bikes. 
+
+
+
