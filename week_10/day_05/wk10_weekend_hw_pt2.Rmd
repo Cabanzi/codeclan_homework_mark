@@ -1,0 +1,52 @@
+---
+title: "Weekend Homework Pt2"
+output: html_document
+date: "2023-05-27"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1) I want to predict how well 6 year-olds are going to do in their final school exams. Using the following variables am I likely under-fitting, fitting well or over-fitting? Postcode, gender, reading level, score in maths test, date of birth, family income.
+
+Based on the given variables, it's unlikely that you are overfitting or underfitting. These variables seem relevant to predicting the performance of 6-year-olds in their final exams. However, it's important to note that the predictive power of these variables may vary, and you should assess their individual significance and relationships with the outcome variable.
+
+
+2) If I have two models, one with an AIC score of 34,902 and the other with an AIC score of 33,559 which model should I use?
+
+
+The model with 33,559 should be chosen. Generally speaking a lower AIC score is better and would suggest a better fit between model fit and complexitiy.
+
+
+3) I have two models, the first with: r-squared: 0.44, adjusted r-squared: 0.43. The second with: r-squared: 0.47, adjusted r-squared: 0.41. Which one should I use?
+
+In this scenario I would reccomend chosing the second model has it has a higher overall value for r-squared. The r-squared indicates the proportion of variance in the dependent variable explained by the model. Therefore it is more likely to be a btter fit for the data. 
+
+
+4) I have a model with the following errors: RMSE error on test set: 10.3, RMSE error on training data: 10.4. Do you think this model is over-fitting?
+
+The model may be slightly overfitting, but the difference between the RMSE error on the test set (10.3) and the training data (10.4) is relatively small. Overfitting typically occurs when the model performs significantly better on the training data compared to the test data. It's important to evaluate the model's performance on independent validation data to get a more accurate assessment of whether it's overfitting.
+
+
+
+5) How does k-fold validation work?
+
+K-fold cross-validation is a technique used to assess the performance and generalizability of a machine learning model. It involves splitting the available data into K equally sized folds or subsets. The model is trained K times, each time using K-1 folds as the training set and the remaining fold as the validation set. The performance metrics, such as accuracy or error, are then averaged over the K iterations to obtain a more robust estimate of the model's performance.
+
+
+
+6) What is a validation set? When do you need one?
+
+A validation set is a subset of the available data that is used to assess the performance of a trained model. It serves as an independent dataset that was not used during the model's training phase. A validation set helps evaluate how well the model generalizes to new, unseen data and can be used to fine-tune model parameters or compare different models. It is particularly useful when optimizing hyperparameters or when performing model selection.
+
+
+
+7) Describe how backwards selection works.
+
+Backward selection is a feature selection technique used in statistical modeling. It starts with a model that includes all potential predictor variables and then iteratively removes variables based on their statistical significance or contribution to the model's performance. The process typically involves fitting the model, assessing the significance of each variable (e.g., p-values or other statistical tests), and removing the least significant variable. This iterative process continues until a stopping criterion, such as a pre-defined significance level, is met, or a desired model complexity is achieved.
+
+8) Describe how best subset selection works.
+
+Best subset selection is a feature selection technique that involves systematically considering all possible combinations of predictor variables to determine the best subset for model building. The process starts with the subset containing no predictors and gradually adds one or more predictors, evaluating each combination's performance based on a chosen criterion (e.g., adjusted r-squared or AIC). The best subset is determined by selecting the model with the highest performance criterion within a specified model complexity or size constraint. This approach can be computationally expensive for large numbers of predictors but provides a comprehensive search for the best subset of variables.
+
