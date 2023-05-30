@@ -1,0 +1,35 @@
+---
+title: "Decision Trees and Random Forrests"
+output: html_document
+date: "2023-05-29"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Clustering vs Classification 
+Clustering is a method used in unsupervised learning. It aims to group similar data points together based on their inherent characteristics or patterns. The goal of clustering is to identify natural clusters or subgroups within a dataset, allowing us to discover hidden structures or relationships. It helps in organizing and understanding the data without any prior knowledge or guidance.
+
+On the other hand, machine learning is a broader concept that encompasses various algorithms and approaches used to train models on labeled data. It involves teaching a machine learning model to make predictions or decisions by learning from example data. In machine learning, we provide the model with a labeled dataset, where each data point is associated with a known outcome or target variable. The model then learns patterns and relationships from this labeled data to make predictions or classifications on new, unseen data.
+
+
+#Decision Trees:
+A decision tree is a flowchart-like structure where each internal node represents a feature or attribute, each branch represents a decision rule, and each leaf node represents the outcome or class label. The decision tree algorithm recursively splits the data based on the selected features, aiming to maximize the information gain or decrease the impurity at each split. This process continues until a stopping criterion is met, such as reaching a maximum depth or having a minimum number of instances in each leaf.
+
+Strengths of decision trees include their interpretability and ease of understanding. They can handle both categorical and numerical features, and 
+However, decision trees tend to overfit the training data, resulting in poor generalisation to unseen data. To address this, ensemble methods like random forests are used.
+
+#Random Forrests:
+Random forests combine multiple decision trees to make predictions. Each tree is built using a different subset of the training data and a random subset of features. During prediction, the random forest aggregates the predictions of all the trees and selects the majority class (for classification) or averages the predicted values (for regression). Random forests mitigate the overfitting problem of individual decision trees by reducing variance and improving generalization.
+
+Random forests have several advantages. They provide robust and accurate predictions, handle high-dimensional data well, and can handle large datasets.They also offer feature importance measures, allowing users to identify the most influential features in the classification or regression task.
+
+Random forests find applications in various domains, including finance, healthcare, and image classification. An example use case is in medical diagnosis. Given a dataset of patient characteristics and symptoms, a random forest model can be trained to classify patients into different disease categories, such as cancer types or heart diseases. The model can provide interpretable rules for making predictions and assist medical professionals in decision-making.
+
+
+## Refrences 
+https://towardsdatascience.com/decision-trees-in-machine-learning-641b9c4e8052
+https://www.geeksforgeeks.org/decision-tree-implementation-python/
+https://towardsdatascience.com/an-implementation-and-explanation-of-the-random-forest-in-python-77bf308a9b76
+https://www.datacamp.com/tutorial/random-forests-classifier-python
