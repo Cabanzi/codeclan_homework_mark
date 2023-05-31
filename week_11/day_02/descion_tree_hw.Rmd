@@ -1,0 +1,137 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(rpart)
+library(rpart.plot)
+library(tidyverse)
+library(janitor)
+
+library(tidyverse)
+titanic_set <- read_csv('data/titanic_decision_tree_data.csv')
+
+shuffle_index <- sample(1:nrow(titanic_set))
+
+# shuffle the data so class order isn't in order - need this for training/testing split later on 
+titanic_set <- titanic_set[shuffle_index, ]
+```
+
+# Question 1 
+```{r}
+titanic_clean <- titanic_set %>%
+  filter(survived %in% c(0,1)) %>%
+# Convert to factor level
+    mutate(sex = as.factor(sex), 
+           age_status = as.factor(if_else(age <= 16, "child", "adult")),
+         class = factor(pclass, levels = c(3,2,1), labels = c("Lower", "Middle", "Upper")), 
+           survived_flag = factor(survived, levels = c(0,1), labels = c("No", "Yes")), 
+           port_embarkation = as.factor(embarked)) %>%
+  select(sex, age_status, class, port_embarkation, sib_sp, parch, survived_flag) %>%
+  na.omit()
+```
+
+# Question 2
+```{r}
+glimpse(titanic_clean)
+```
+```{r}
+titanic_clean %>% 
+  select(sex, age_status, class, survived_flag) %>% 
+  ggpairs()
+```
+
+```{r}
+titanic_clean %>% 
+  select(port_embarkation, sib_sp, parch, survived_flag) %>% 
+  ggpairs()
+```
+
+From the plots, my initial thoughts are that: sex,b age_status, class and parch 
+will be the most useful for determining if a passenger is likely to survive. 
+
+#Question 3
+
+```{r}
+n_data <- nrow(titanic_clean)
+
+test_index <- sample(1:n_data, size = n_data * .1)
+
+titanic_test <- slice(titanic_clean, test_index)
+titanic_train <- slice(titanic_clean, -test_index)
+```
+
+```{r}
+titanic_test %>% 
+  tabyl(survived_flag)
+```
+
+```{r}
+titanic_train %>% 
+  tabyl(survived_flag)
+```
+
+Honest answer no idea what I did but when I put in .1 it looked like my splits for 
+test/train were very similar, which I decided was a good thing. 
+
+#Question 4
+```{r}
+titanic_fit <- rpart(
+  formula = survived_flag ~ .,
+  data = titanic_train,
+  method = "class"
+)
+```
+
+```{r}
+rpart.plot(titanic_fit,
+           yesno = 2,
+           fallen.leaves = TRUE,
+           faclen = 6,
+           digits = 4)
+```
+
+#Question 5: Write down what this tells you, in detail. What variables are important? 
+What does each node tell you? Who has the highest chance of surviving? Who has the 
+lowest? Provide as much detail as you can.
+
+The model has deemed the sex, class, sib_sp and port_embarkation to be the most 
+important when determining the likelyhood of survival. The root node relates to 
+a classification linked with sex being = male, on the left we can see a blue node(low prob)
+showing 0.2044 and that 63.34% of the passengers fall into this category. This 
+category is the least likely to survive. If the passenger is not male we then drop down
+to the next node which relates to class = lower. If you are lucky enough to not be lower class
+guess what? You have a 0.9375 probability of surviving! The 22.46% in this category 
+are the most likely to survive. If you are lower class it drops to number of siblings being >1 
+if the answer is yes it drops down to the final level which relates to wether or not they 
+departed from Southampton. 
+
+If you made it this far dear reader I hope that you now have a detailed undertanding of this 
+decision tree, even though I'm sure you've seen it several times over. 
+
+
+# Question 6: Test and add your predictions to your data. Create a confusion matrix. Write down in detail what this tells you for this specific dataset.
+
+```{r}
+titanic_test_pred <- titanic_test %>% 
+  add_predictions(titanic_fit, type = "class")
+```
+
+```{r}
+confusionMatrix(titanic_test_pred$pred, titanic_test_pred$survived_flag)
+```
+
+- The decision tree has 81.69% accuracy.
+- The model predicted "No" 42 times correctly and "Yes" 18 times correctly.
+- There were 2 instances where the model incorrectly predicted "No" when the actual
+  class was "Yes", and 11 instances where the model incorrectly predicted "Yes" when 
+  the actual class was "No".
+- The model achieved a sensitivity of 0.9524 for the "No" class, meaning it
+  correctly identified 95.24% of the instances where the actual class was "No".
+- The model achieved a specificity of 0.6207 for the "Yes" class, meaning it 
+ correctly identified 62.07% of the instances where the actual class was "Yes".
+- The positive predictive value of 0.7843 means that when the model predicted 
+"No", it was correct 78.43% of the time.
+- The negative predictive value of 0.9000 means that when the model predicted "Yes", 
+  it was correct 90% of the time.
