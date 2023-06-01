@@ -56,7 +56,7 @@ will be the most useful for determining if a passenger is likely to survive.
 ```{r}
 n_data <- nrow(titanic_clean)
 
-test_index <- sample(1:n_data, size = n_data * .1)
+test_index <- sample(1:n_data, size = n_data * .2)
 
 titanic_test <- slice(titanic_clean, test_index)
 titanic_train <- slice(titanic_clean, -test_index)
@@ -132,6 +132,6 @@ confusionMatrix(titanic_test_pred$pred, titanic_test_pred$survived_flag)
 - The model achieved a specificity of 0.6207 for the "Yes" class, meaning it 
  correctly identified 62.07% of the instances where the actual class was "Yes".
 - The positive predictive value of 0.7843 means that when the model predicted 
-"No", it was correct 78.43% of the time.
+ "No", it was correct 78.43% of the time.
 - The negative predictive value of 0.9000 means that when the model predicted "Yes", 
   it was correct 90% of the time.

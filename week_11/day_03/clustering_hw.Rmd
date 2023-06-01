@@ -1,0 +1,141 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(factoextra)
+library(GGally)
+library(broom)
+
+mall_customers <- read_csv("~/Desktop/CodeClan/codeclan_homework_mark/week_11/day_03/data/mall_customers.csv")%>% 
+  clean_names() %>% 
+  select(-customer_id, -gender)
+```
+
+# Task 1
+```{r}
+mall_customers %>% 
+ggpairs()
+```
+From this I can't see any really promising correlations, potentially age? 
+
+
+# Task 2
+```{r}
+mall_scale <- mall_customers %>% 
+  mutate(across(age:annual_income_k,
+         .fns = scale))
+```
+
+```{r}
+clustered_mall <- mall_scale %>% 
+  kmeans(centers = 6,
+         nstart = 25)
+
+clustered_mall
+```
+
+```{r}
+clustered_mall%>% 
+  tidy(col.names = colnames(mall_scale))
+```
+
+```{r}
+min_k <- 1
+max_k <- 20
+
+mall_k_clusters <- tibble(k = min_k:max_k) %>% 
+  mutate(kclust = map(k, ~kmeans(mall_scale, center = .x, nstart = 25)),
+         tidied = map(kclust, tidy),
+         glanced = map(kclust, glance),
+         augmented = map(kclust, augment, mall_customers))
+
+mall_k_clusters
+```
+
+```{r}
+clusterings <- mall_k_clusters %>% 
+  unnest(glanced)
+
+clusterings
+```
+
+```{r}
+clusterings %>% 
+  ggplot(aes(x = k, 
+             y = tot.withinss)) +
+  geom_point() + 
+   geom_line() +
+   scale_x_continuous( breaks = seq(1, 20, 1))
+```
+
+```{r}
+fviz_nbclust(mall_scale,
+             kmeans,
+             method = "silhouette",
+             nstart = 25)
+```
+ Using the elbow method k = 3 seems to be the best fit
+
+# Task 3
+
+```{r}
+clusterings %>% 
+  unnest(augmented) %>% 
+  filter(k == 3) %>% 
+  ggplot(aes(x = age, 
+             y = annual_income_k,
+             colour = .cluster)) +
+  geom_point() +
+  labs(title = "Age vs Annual Income",
+       x = "Age",
+       y = "Annual Income")
+  
+```
+From this graph I found it hard ro see any distinct groupings, I don't think the
+data is very suited to clustering
+
+```{r}
+clusterings %>% 
+  unnest(augmented) %>% 
+  filter(k == 3) %>% 
+  ggplot(aes(x = age, 
+             y = spending_score_1_100,
+             colour = .cluster)) +
+  geom_point() +
+  labs(title = "Age vs Spending Score",
+       x = "Age",
+       y = "Spending Score")
+  
+```
+Here we can see 3 distinct Cluster for spending scores.
+
+Cluster 1: Bargain Hunters
+Cluster 2: Name TBC
+Cluster 3: Shop till you drop
+
+I think the data is good for clustering. 
+
+Perhapbs you could have 3 campaigns: 
+- One for some sort of budget sale aimed at cluster 1
+- Cluster 2, also some sort of sale but perhapbs on slightly more expensive products
+- Cluster 3 market the best new products
+
+
+```{r}
+clusterings %>% 
+  unnest(augmented) %>% 
+  filter(k == 3) %>% 
+  ggplot(aes(x = annual_income_k, 
+             y = spending_score_1_100,
+             colour = .cluster)) +
+  geom_point() +
+  labs(title = "Annual Income vs Spending Score",
+       x = "Annual Income",
+       y = "Spending Score")
+```
+I also feel this data is good for clustering but I'm actually not sure what it 
+tells you because there is a fairly even spread of the data, in realation to income. 
